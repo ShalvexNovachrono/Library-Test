@@ -83,8 +83,8 @@ public class Main {
             return ReadBy.get(Index);
         }
         public String getLastReadBy() {
-            return ReadBy.getLast();
-        } // ReadBy.get(LastReadBy.size() - 1)
+            return ReadBy.get(ReadBy.size() - 1);
+        } //  ReadBy.getLast()
         public void addToReadBy(String UserName) {
             this.ReadBy.add(UserName);
         }
