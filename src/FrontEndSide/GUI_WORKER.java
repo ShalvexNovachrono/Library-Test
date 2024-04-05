@@ -205,8 +205,74 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
 
     // this is the login page, make sure to add the components in it
+
+    public static JButton SubmitLoginButton;
+    public static JTextField Login_Username, Login_Password;
+
     public static void Panel_Number_2() {
         Clear_Frame(Main_Frame);
 
+        JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
+
+        RegisterButton = Create_Button(Main_Frame.getWidth() - 130, 5, "Register", 100, 50, 40);
+        RegisterButton.setRolloverEnabled(false);
+
+        Panel1.add(RegisterButton);
+
+        JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+
+        final JLabel[] Login_Username_Label = {Create_Label(
+                (Panel2.getWidth() / 2) - 75,
+                (Panel2.getHeight() / 2) - 200,
+                "Username",
+                150,
+                50
+        )};
+        Login_Username = Create_TextField((Panel2.getWidth() / 2) - 100, (Panel2.getHeight() / 2) - 170,0, 200, 50);
+
+        final JLabel[] Login_Password_Label = {Create_Label(
+                (Panel2.getWidth() / 2) - 75,
+                (Panel2.getHeight() / 2) - 125,
+                "Password",
+                150,
+                50
+        )};
+        Login_Password = Create_TextField((Panel2.getWidth() / 2) - 100, (Panel2.getHeight() / 2) - 65,0, 200, 50);
+
+        SubmitLoginButton = Create_Button((Panel2.getWidth() / 2) - 50, (Panel2.getHeight() / 2) + 25, "Login", 100, 50, 40);
+        SubmitLoginButton.setRolloverEnabled(false);
+
+        Panel2.add(Login_Username_Label[0]);
+        Panel2.add(Login_Username);
+        Panel2.add(Login_Password_Label[0]);
+        Panel2.add(Login_Password);
+
+        Panel2.add(SubmitLoginButton);
+
+        Main_Frame.add(Panel1);
+        Main_Frame.add(Panel2);
+
+        Main_Frame.repaint();
+        Main_Frame.revalidate();
+
+        Main_Frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+
+                Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
+                LoginButton.setBounds(Main_Frame.getWidth() - 220, 5,75, 50);
+                RegisterButton.setBounds(Main_Frame.getWidth() - 130, 5, 100, 50);
+
+                Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                Login_Username_Label[0].setBounds((Panel2.getWidth() / 2) - 75, (Panel2.getHeight() / 2) - 200, 150, 50);
+                Login_Username.setBounds((Panel2.getWidth() / 2) - 100, (Panel2.getHeight() / 2) - 170, 200, 50);
+                Login_Password_Label[0].setBounds((Panel2.getWidth() / 2) - 75, (Panel2.getHeight() / 2) - 125, 150, 50);
+                Login_Password.setBounds((Panel2.getWidth() / 2) - 100, (Panel2.getHeight() / 2) - 65, 200, 50);
+
+                SubmitLoginButton.setBounds((Panel2.getWidth() / 2) - 50, (Panel2.getHeight() / 2) + 25, 100, 50);
+                Main_Frame.repaint();
+
+            }
+        });
     }
 }
