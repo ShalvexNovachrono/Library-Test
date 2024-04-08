@@ -275,4 +275,51 @@ public class GUI_WORKER extends Front_End_Element_Code {
             }
         });
     }
+
+    public static void Panel_Number_3() {
+        Clear_Frame(Main_Frame);
+
+        JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
+
+        LoginButton = Create_Button(Panel1.getWidth() - 200, 5, "Login", 100, 50, 40);
+        LoginButton.setRolloverEnabled(false);
+        JButton BackButton = Create_Button(200, 5, "Back", 100, 50, 40 );
+        BackButton.setRolloverEnabled(false);
+
+
+        Panel1.add(LoginButton);
+        Panel1.add(BackButton);
+
+        JPanel Panel2 = Create_Panel(0, 100, Panel1.getWidth(), Main_Frame.getHeight() - 100);
+        JLabel NameInputLabel = Create_Label((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 250, "Name:", 100, 50 );
+        NameInputLabel.setFont(new java.awt.Font(FrameDefaultFontName, Font.PLAIN, 14 ));
+        JTextField NameInput = Create_TextField((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 200, 0, 200, 50 );
+
+        Panel2.add(NameInputLabel);
+        Panel2.add(NameInput);
+
+        Main_Frame.add(Panel1);
+        Main_Frame.add(Panel2);
+
+        Main_Frame.repaint();
+        Main_Frame.revalidate();
+
+        Main_Frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+
+                Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
+                LoginButton.setBounds(Main_Frame.getWidth() - 100, 5,100, 50);
+                BackButton.setBounds(100, 5,100,50 );
+
+                Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                NameInputLabel.setBounds((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 250,  100, 50 );
+                NameInput.setBounds((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 200,  100, 50 );
+
+                Main_Frame.repaint();
+
+            }
+        });
+    }
+
 }
