@@ -287,6 +287,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
         BackButton.setRolloverEnabled(false);
 
 
+
         Panel1.add(LoginButton);
         Panel1.add(BackButton);
 
@@ -294,9 +295,13 @@ public class GUI_WORKER extends Front_End_Element_Code {
         JLabel NameInputLabel = Create_Label((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 250, "Name:", 100, 50 );
         NameInputLabel.setFont(new java.awt.Font(FrameDefaultFontName, Font.PLAIN, 14 ));
         JTextField NameInput = Create_TextField((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 200, 0, 200, 50 );
+        JLabel Email = Create_Label((Main_Frame.getWidth()/2) - 50, (Main_Frame.getHeight()/2) - 200, "Email:", 100, 50 );
+
+
 
         Panel2.add(NameInputLabel);
         Panel2.add(NameInput);
+        Panel2.add(Email);
 
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
