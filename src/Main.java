@@ -268,15 +268,6 @@ public class Main {
 
         Frame("Local Library"); // Makes a frame with the Title "Local Library"
         Panel_Number_1(); // This will call the GUI function in "FrontEndSide/GUI_WORKER.java"
-
-
-        GUI_WORKER.LoginButton.addActionListener(v -> { // this access the global jbutton variable and checks if you did anything with the button like clicking
-            Panel_Number_2(); // this will show login page
-        });
-
-        GUI_WORKER.RegisterButton.addActionListener(v -> {
-            Panel_Number_3();
-        });
     }
 }
 
