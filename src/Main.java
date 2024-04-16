@@ -275,7 +275,7 @@ public class Main {
         });
 
         GUI_WORKER.RegisterButton.addActionListener(v -> {
-            System.out.println("Register Please");
+            Panel_Number_3();
         });
     }
 }
