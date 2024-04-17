@@ -1,11 +1,9 @@
 package FrontEndSide;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -69,7 +67,9 @@ class Front_End_Element_Code {
         return temp_label;
     }
 
+    @SuppressWarnings("rawtypes")
     public static JList Create_List_Container(int x, int y, DefaultListModel List_Items, int Width, int Height) {
+        @SuppressWarnings("unchecked")
         JList Temp_List = new JList(List_Items);
         Temp_List.setBounds(x, y, Width, Height);
         return Temp_List;
@@ -137,6 +137,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
     public static JFrame Main_Frame;
     public static ArrayList<Integer> LastVistPage = new ArrayList<Integer>();
     public ArrayList<String> BookList = new ArrayList<String>(100);
+    public static Boolean isLoggedIn = false;
+    public static String Username = "";
 
     static void Take_Me_Back_To_LastPage_That_I_Have_Visited() {
         try {
@@ -371,6 +373,11 @@ public class GUI_WORKER extends Front_End_Element_Code {
         BackButton.addActionListener(v -> {
             Take_Me_Back_To_LastPage_That_I_Have_Visited();
         });
+
+        SubmitLoginButton.addActionListener(v -> {
+            LastVistPage.add(LastVistPage.get(LastVistPage.size() - 1));
+            BackEndSide.File_Worker.Login(Login_Username.getText(), Login_Password.getText());
+        });
     }
 
     // Register page basically login page
@@ -500,8 +507,14 @@ public class GUI_WORKER extends Front_End_Element_Code {
         LoginButton.addActionListener(v -> {
             Panel_Number_2();
         });
+
         BackButton.addActionListener(v -> {
             Take_Me_Back_To_LastPage_That_I_Have_Visited();
+        });
+        
+        SubmitRegisterButton.addActionListener(v -> {
+            LastVistPage.add(LastVistPage.get(LastVistPage.size() - 1));
+            BackEndSide.File_Worker.Register(Register_Username.getText(), Register_Password.getText());
         });
     }
 
@@ -520,23 +533,42 @@ public class GUI_WORKER extends Front_End_Element_Code {
         JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
 
         final JLabel[] Error_Title_Label = {Create_Label(
-                (Panel2.getWidth() / 2) - 100,
-                (Panel2.getHeight() / 2) - 225,
-                "Error Title:",
-                250,
-                50
+            ((Panel2.getWidth() / 2) - 125),
+            ((Panel2.getHeight() / 2) - 25) - 225,
+            "Error Title:",
+            250,
+            50
         )};
 
+        
+        Error_Title_Label[0].setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 14 ));
+        Error_Title_Label[0].setForeground(new Color(255,51,51));
+
         final JLabel[] Error_Title_Label_Message = {Create_Label(
-                (Panel2.getWidth() / 2) - 90,
-                (Panel2.getHeight() / 2) - 225,
-                Title,
-                250,
-                50
+            ((Panel2.getWidth() / 2) - 125) + 80,
+            ((Panel2.getHeight() / 2) - 25)  - 225,
+            Title,
+            250,
+            50
         )};
+
+        Error_Title_Label_Message[0].setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 14 ));
+        Error_Title_Label_Message[0].setForeground(new Color(255,51,51));
+
+        final JLabel[] Error_Message_Label_Message = {Create_Label(
+            ((Panel2.getWidth() / 2) - 125),
+            ((Panel2.getHeight() / 2) - 25)  - 200,
+            Message,
+            250,
+            50
+        )};
+
+        Error_Message_Label_Message[0].setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 14 ));
+        Error_Message_Label_Message[0].setForeground(new Color(255,51,51));
 
         Panel2.add(Error_Title_Label[0]);
         Panel2.add(Error_Title_Label_Message[0]);
+        Panel2.add(Error_Message_Label_Message[0]);
 
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
@@ -553,23 +585,59 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
                 Error_Title_Label[0].setBounds(
-                        (Panel2.getWidth() / 2) - 100,
-                        (Panel2.getHeight() / 2) - 225,
-                        250,
-                        50
+                    ((Panel2.getWidth() / 2) - 125),
+                    ((Panel2.getHeight() / 2) - 25)  - 225,
+                    250,
+                    50
                 );
 
                 Error_Title_Label_Message[0].setBounds(
-                        (Panel2.getWidth() / 2) - 90,
-                        (Panel2.getHeight() / 2) - 225,
-                        250,
-                        50
+                    ((Panel2.getWidth() / 2) - 125) + 80,
+                    ((Panel2.getHeight() / 2) - 25)  - 225,
+                    250,
+                    50
+                );
+
+                Error_Message_Label_Message[0].setBounds(
+                    ((Panel2.getWidth() / 2) - 125),
+                    ((Panel2.getHeight() / 2) - 25) - 200,
+                    250,
+                    50
                 );
             }
         });
 
         BackButton.addActionListener(v -> {
             Take_Me_Back_To_LastPage_That_I_Have_Visited();
+        });
+    }
+
+
+    public static void Panel_Number_4() {
+        LastVistPage.add(4);
+        Clear_Frame(Main_Frame);
+
+        JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
+
+
+        JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+
+
+        Main_Frame.add(Panel1);
+        Main_Frame.add(Panel2);
+
+        Main_Frame.repaint();
+        Main_Frame.revalidate();
+
+        Main_Frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+
+                Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
+               
+                Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+            
+            }
         });
     }
 }
