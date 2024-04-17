@@ -1,8 +1,8 @@
-import FrontEndSide.GUI_WORKER;
-
-import java.util.ArrayList;
 
 import static FrontEndSide.GUI_WORKER.*;
+import BackEndSide.*;
+
+import java.util.ArrayList;
 
 
 public class Main {
@@ -268,6 +268,7 @@ public class Main {
 
         Frame("Local Library"); // Makes a frame with the Title "Local Library"
         Panel_Number_1(); // This will call the GUI function in "FrontEndSide/GUI_WORKER.java"
+        File_Worker.create_file(); // This will create a file called "Book_List.txt"
     }
 }
 

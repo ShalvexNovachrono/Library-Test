@@ -107,7 +107,7 @@ class Front_End_Element_Code {
 }
 
 class RoundedButton extends JButton {
-
+    
     private int radius;
 
     public RoundedButton(int radius, String text) {
@@ -132,6 +132,7 @@ class RoundedButton extends JButton {
         g2d.drawString(getText(), textX, textY);
     }
 }
+
 public class GUI_WORKER extends Front_End_Element_Code {
     public static JFrame Main_Frame;
     public static ArrayList<Integer> LastVistPage = new ArrayList<Integer>();
@@ -170,9 +171,9 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
 
-        JButton LoginButton = Create_Button(Main_Frame.getWidth() - 220, 5, "Login", 75, 50, 40);
+        JButton LoginButton = Create_Button(Main_Frame.getWidth() - 260, (Panel1.getHeight() / 2) - 25, "Login", 100, 50, 40);
 
-        JButton RegisterButton = Create_Button(Main_Frame.getWidth() - 130, 5, "Register", 100, 50, 40);
+        JButton RegisterButton = Create_Button(Main_Frame.getWidth() - 130, (Panel1.getHeight() / 2) - 25, "Register", 100, 50, 40);
 
 
         LoginButton.setRolloverEnabled(false);
@@ -215,8 +216,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
             public void componentResized(ComponentEvent e) {
 
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
-                LoginButton.setBounds(Main_Frame.getWidth() - 220, 5,75, 50);
-                RegisterButton.setBounds(Main_Frame.getWidth() - 130, 5, 100, 50);
+                LoginButton.setBounds(Main_Frame.getWidth() - 220, (Panel1.getHeight() / 2) - 25, 75, 50);
+                RegisterButton.setBounds(Main_Frame.getWidth() - 130, (Panel1.getHeight() / 2) - 25, 100, 50);
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
                 label1[0].setBounds((Panel2.getWidth() / 2) - 150, (Panel2.getHeight() / 2)  - 200, 400, 100);
                 label2[0].setBounds((Panel2.getWidth() / 2) - 150, (Panel2.getHeight() / 2)  - 125, 400, 100);
@@ -249,7 +250,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
         JButton RegisterButton = Create_Button(Panel1.getWidth() - 130, (Panel1.getHeight() / 2) - 25, "Register", 100, 50, 40);
         RegisterButton.setRolloverEnabled(false);
-        JButton BackButton = Create_Button(130, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40);
+        JButton BackButton = Create_Button(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40);
         BackButton.setRolloverEnabled(false);
 
         Panel1.add(RegisterButton);
@@ -322,7 +323,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
             public void componentResized(ComponentEvent e) {
 
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
-                BackButton.setBounds(130, (Panel1.getHeight() / 2) - 25, 100, 50);
+                BackButton.setBounds(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, 100, 50);
                 RegisterButton.setBounds(Panel1.getWidth() - 130, (Panel1.getHeight() / 2) - 25, 100, 50);
 
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
@@ -379,7 +380,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
 
-        JButton BackButton = Create_Button(130, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40 );
+        JButton BackButton = Create_Button(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40 );
         BackButton.setRolloverEnabled(false);
 
         JButton LoginButton = Create_Button(Panel1.getWidth() - 130, (Panel1.getHeight() / 2) - 25, "Login", 100, 50, 40);
@@ -456,7 +457,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
             public void componentResized(ComponentEvent e) {
 
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
-                BackButton.setBounds(130, (Panel1.getHeight() / 2) - 25, 100, 50);
+                BackButton.setBounds(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, 100, 50);
                 LoginButton.setBounds(Panel1.getWidth() - 130, (Panel1.getHeight() / 2) - 25, 100, 50);
 
 
@@ -511,7 +512,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
 
-        JButton BackButton = Create_Button(130, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40 );
+        JButton BackButton = Create_Button(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40 );
         BackButton.setRolloverEnabled(false);
 
         Panel1.add(BackButton);
