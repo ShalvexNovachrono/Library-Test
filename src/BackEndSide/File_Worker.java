@@ -85,18 +85,20 @@ public class File_Worker {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         String[] UserDetailsFromLine = line.split("[-/00/-]");
-                        // System.out.println(UserDetailsFromLine[0].substring(0, UserDetailsFromLine[0].length() - 1));
-                        // System.out.println(line);
-                        // System.out.println(line.substring(UserDetailsFromLine[0].length() + 7, line.length()));
+                        String u, p;
                         try {
-                            if (UserDetailsFromLine[0].substring(0, UserDetailsFromLine[0].length() - 1).equals(Username) && verifyPassword(Password, line.substring(UserDetailsFromLine[0].length() + 7, line.length()))) {
-                                FrontEndSide.GUI_WORKER.Username = Username;
-                                isLoggedIn = true;
-                                Panel_Number_4();
-                                break;
-                            }
+                            u = UserDetailsFromLine[0].substring(0, UserDetailsFromLine[0].length() - 1);
+                            p = line.substring(UserDetailsFromLine[0].length() + 7, line.length());
                         } catch (Exception e) {
-                            System.out.println("lines are not working.");
+                            u = UserDetailsFromLine[0];
+                            p = UserDetailsFromLine[1];
+                        }
+
+                        if (u.equals(Username) && verifyPassword(Password, p)) {
+                            FrontEndSide.GUI_WORKER.Username = Username;
+                            isLoggedIn = true;
+                            Panel_Number_4();
+                            break;
                         }
                     }
                 } catch (IOException e) {

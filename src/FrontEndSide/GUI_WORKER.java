@@ -1,6 +1,10 @@
 package FrontEndSide;
 
+import BackEndSide.organiser.Book;
+
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -52,7 +56,7 @@ class Front_End_Element_Code {
 
     public static JTextField Create_TextField(int x, int y, int column, int Width, int Height) {
         JTextField temp_input = new JTextField(column);
-        temp_input.setFont(new java.awt.Font(FrameDefaultFontName, Font.PLAIN, 14));
+        temp_input.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 14));
         if ((Width != 0 && Height != 0) && (column == 0))
             temp_input.setBounds(x, y, Width, Height );
         return temp_input;
@@ -61,7 +65,7 @@ class Front_End_Element_Code {
     public static JLabel Create_Label(int x, int y, String text, int Width, int Height) {
         JLabel temp_label = new JLabel(text);
         temp_label.setForeground(Color.darkGray);
-        temp_label.setFont(new java.awt.Font(FrameDefaultFontName, Font.PLAIN, 11));
+        temp_label.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 14));
         if (Width != 0 && Height != 0)
             temp_label.setBounds(x, y, Width, Height );
         return temp_label;
@@ -136,7 +140,6 @@ class RoundedButton extends JButton {
 public class GUI_WORKER extends Front_End_Element_Code {
     public static JFrame Main_Frame;
     public static ArrayList<Integer> LastVistPage = new ArrayList<Integer>();
-    public ArrayList<String> BookList = new ArrayList<String>(100);
     public static Boolean isLoggedIn = false;
     public static String Username = "";
 
@@ -618,9 +621,85 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Clear_Frame(Main_Frame);
 
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
+        
+        JTextField SearchInput = new JTextField("Search book...", 0);
+        SearchInput.setBounds(((Panel1.getWidth() / 2) - 150), ((Panel1.getHeight() / 2) - 25), 200, 50);
 
+        JButton SearchButton = Create_Button((SearchInput.getX() + 225), ((Panel1.getHeight() / 2) - 25), "Search", 100, 50, 40);
+
+        Panel1.add(SearchInput);
+        Panel1.add(SearchButton);
 
         JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+
+        int Grid_Count_Col = 0;
+        int Grid_Count_Row = 0;
+
+        int Grid_Count = 1;
+        Loop:
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < Math.round(BackEndSide.organiser.BookShelf_.getAllBooks().size() / 5 + 0.5); j++) {
+                if (!(Grid_Count <= BackEndSide.organiser.BookShelf_.getAllBooks().size())) {
+                    Grid_Count_Row = j;
+                    Grid_Count_Col = i;
+                    break Loop;
+                } else {
+                    Grid_Count++;
+                }
+            }
+        }
+        System.out.println(Grid_Count_Col + " " + Grid_Count_Row);
+
+
+        JPanel This_Book_Shelf = new JPanel();
+        This_Book_Shelf.setLayout(new GridLayout(Grid_Count_Row, Grid_Count_Col));
+
+        //containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+
+        // Add your panels to the container panel
+        for (Book book : BackEndSide.organiser.BookShelf_.getAllBooks()) {
+            JPanel Book_Cover = new JPanel();
+            Book_Cover.setLayout(new GridLayout(1, 3));
+            Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            JPanel Book_Cover_ = Create_Panel(0, 0, Panel2.getWidth(), 25);
+
+            JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
+            Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
+            System.out.println(book.getBookName());
+
+            JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
+            System.out.println(book.getBookDescription());
+
+            JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(),  Panel2.getWidth(), 25);
+            System.out.println(book.getAuthor());
+
+            Book_Cover_.add(Title);
+            Book_Cover_.add(Description);
+            Book_Cover_.add(Author);
+
+            Book_Cover.add(Book_Cover_);
+
+
+            Book_Cover.setPreferredSize(new Dimension(200, 150));
+            Border blackline = BorderFactory.createLineBorder(Color.black);
+            Book_Cover.setBorder(blackline);
+            // Add the Book_Cover to the This_Book_Shelf
+            This_Book_Shelf.add(Book_Cover);
+            Main_Frame.repaint();
+            Main_Frame.revalidate();
+        }
+
+        // Create a JScrollPane and add the containerPanel to it
+        JScrollPane Scroll_View = new JScrollPane(This_Book_Shelf);
+        Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50); // - 15 so the scroll bar can be seen
+        // Set scroll bar policies (optional)
+        Scroll_View.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        Scroll_View.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        Panel2.add(Scroll_View);
+
+
 
 
         Main_Frame.add(Panel1);
@@ -634,9 +713,25 @@ public class GUI_WORKER extends Front_End_Element_Code {
             public void componentResized(ComponentEvent e) {
 
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
+                SearchInput.setBounds(
+                    ((Panel1.getWidth() / 2) - 150),
+                    ((Panel1.getHeight() / 2) - 25),
+                    200,
+                    50
+                );
+                SearchButton.setBounds(
+                    (SearchInput.getX() + 225),
+                    ((Panel1.getHeight() / 2) - 25),
+                    200,
+                    50
+                );
                
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50);
             
+
+                Main_Frame.repaint();
+                Main_Frame.revalidate();
             }
         });
     }
