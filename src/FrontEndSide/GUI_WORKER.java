@@ -735,36 +735,44 @@ public class GUI_WORKER extends Front_End_Element_Code {
         });
 
         SearchButton.addActionListener(v -> {
+            This_Book_Shelf.removeAll();
+            String looking_for = SearchInput.getText();
             // Add your panels to the container panel
             for (Book book : BackEndSide.organiser.BookShelf_.getAllBooks()) {
-                JPanel Book_Cover = new JPanel();
-                Book_Cover.setLayout(new GridLayout(1, 3));
-                Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+                if (book.getBookName().contains(looking_for) || book.getBookDescription().contains(looking_for) || book.getAuthor().contains(looking_for) || Integer.toString(book.getAmountOfViews()).contains(looking_for) || Float.toString(book.getBookRating()).contains(looking_for)) {
+                    JPanel Book_Cover = new JPanel();
+                    Book_Cover.setLayout(new GridLayout(1, 3));
+                    Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    
+                    JPanel Book_Cover_Image = Create_Panel(0, 0, Panel2.getWidth() - (Panel2.getWidth() / 10), 25);
+                    JLabel Images = Create_Label_With_ImageIcon(0, 0, "", 100, 0, true);
+                    
+                    
+                    JPanel Book_Cover_ = Create_Panel(Panel2.getWidth() - (Panel2.getWidth() / 10), 0, Panel2.getWidth() / 10, 25);
 
-                JPanel Book_Cover_ = Create_Panel(0, 0, Panel2.getWidth(), 25);
+                    JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
+                    Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
 
-                JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
-                Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
+                    JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
 
-                JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
+                    JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(), Panel2.getWidth(), 25);
 
-                JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(),  Panel2.getWidth(), 25);
+                    Book_Cover_.add(Title);
+                    Book_Cover_.add(Description);
+                    Book_Cover_.add(Author);
 
-                Book_Cover_.add(Title);
-                Book_Cover_.add(Description);
-                Book_Cover_.add(Author);
-
-                Book_Cover.add(Book_Cover_);
+                    Book_Cover.add(Book_Cover_);
 
 
-                Book_Cover.setPreferredSize(new Dimension(200, 150));
-                Border blackline = BorderFactory.createLineBorder(Color.black);
-                Book_Cover.setBorder(blackline);
-                // Add the Book_Cover to the This_Book_Shelf
-                This_Book_Shelf.add(Book_Cover);
-                Main_Frame.repaint();
-                Main_Frame.revalidate();
+                    Book_Cover.setPreferredSize(new Dimension(200, 150));
+                    Border blackline = BorderFactory.createLineBorder(Color.black);
+                    Book_Cover.setBorder(blackline);
+                    // Add the Book_Cover to the This_Book_Shelf
+                    This_Book_Shelf.add(Book_Cover);
+                }
             }
+            Main_Frame.repaint();
+            Main_Frame.revalidate();
         });
     }
 }
