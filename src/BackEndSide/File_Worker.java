@@ -101,11 +101,14 @@ public class File_Worker {
                             break;
                         }
                     }
+                    if (!isLoggedIn) {
+                        Panel_Error_Message("User details", "User details don't match.");
+                    }
                 } catch (IOException e) {
                     Panel_Error_Message("Error reading file", e.getMessage());
                 }
             } else {
-                Panel_Error_Message("User details", "User details dont match.");
+                Panel_Error_Message("User details", "User details don't match.");
             }
         } else {
             Panel_Error_Message("Invalid characters", "Username has invalid characters only english alphabets allowed.");
