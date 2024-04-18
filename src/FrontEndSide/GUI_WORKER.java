@@ -648,7 +648,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
                 }
             }
         }
-        System.out.println(Grid_Count_Col + " " + Grid_Count_Row);
+        System.out.println("col: " + Grid_Count_Col + " row: " + Grid_Count_Row);
 
 
         JPanel This_Book_Shelf = new JPanel();
@@ -666,13 +666,10 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
             JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
             Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
-            System.out.println(book.getBookName());
 
             JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
-            System.out.println(book.getBookDescription());
 
             JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(),  Panel2.getWidth(), 25);
-            System.out.println(book.getAuthor());
 
             Book_Cover_.add(Title);
             Book_Cover_.add(Description);
@@ -689,6 +686,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
             Main_Frame.repaint();
             Main_Frame.revalidate();
         }
+
+
 
         // Create a JScrollPane and add the containerPanel to it
         JScrollPane Scroll_View = new JScrollPane(This_Book_Shelf);
@@ -730,6 +729,39 @@ public class GUI_WORKER extends Front_End_Element_Code {
                 Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50);
             
 
+                Main_Frame.repaint();
+                Main_Frame.revalidate();
+            }
+        });
+
+        SearchButton.addActionListener(v -> {
+            // Add your panels to the container panel
+            for (Book book : BackEndSide.organiser.BookShelf_.getAllBooks()) {
+                JPanel Book_Cover = new JPanel();
+                Book_Cover.setLayout(new GridLayout(1, 3));
+                Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+                JPanel Book_Cover_ = Create_Panel(0, 0, Panel2.getWidth(), 25);
+
+                JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
+                Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
+
+                JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
+
+                JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(),  Panel2.getWidth(), 25);
+
+                Book_Cover_.add(Title);
+                Book_Cover_.add(Description);
+                Book_Cover_.add(Author);
+
+                Book_Cover.add(Book_Cover_);
+
+
+                Book_Cover.setPreferredSize(new Dimension(200, 150));
+                Border blackline = BorderFactory.createLineBorder(Color.black);
+                Book_Cover.setBorder(blackline);
+                // Add the Book_Cover to the This_Book_Shelf
+                This_Book_Shelf.add(Book_Cover);
                 Main_Frame.repaint();
                 Main_Frame.revalidate();
             }
