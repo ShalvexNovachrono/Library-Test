@@ -14,7 +14,7 @@ public class Main {
 
     public static void Load_Books() {
         int count = 0;
-        for (int i = 0; i <= 2; i++) {
+        for (int i = 0; i <= 15; i++) {
             Book n = new Book("New Book " + count, "Jacob", "This book is tooo good");
             n.addBookRating(10);
             n.addBookRating(10);
