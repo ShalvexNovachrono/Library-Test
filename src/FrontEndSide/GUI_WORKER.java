@@ -6,18 +6,20 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class Front_End_Element_Code {
 
     static Color FrameBackGroundColour = new Color(255, 255, 255);
     static Color ButtonBackGroundColour = new Color(5, 74, 140);
     static Color ButtonForeGroundColour = new Color(255, 255, 255);
+    static Color SelectedObjectColour = new Color(255, 209, 209);
+    static Color HoverObjectColour = new Color(235, 213, 213);
     static String FrameDefaultFontName = "Merriweather";
 
 
@@ -138,6 +140,32 @@ class RoundedButton extends JButton {
     }
 }
 
+/*
+ *  
+ *                  You use this code to make hover effect and shit ok ? yes (forced)
+ * 
+ */
+// class MyMouseListener implements MouseListener {
+//     static Boolean isClicked = false;
+//     static Boolean isHovering = false;
+//     public void mouseClicked(MouseEvent event) {
+//         isClicked = true;
+//     }
+//     public void mouseEntered(MouseEvent event) {
+//         isHovering = true;
+//     }
+//     public void mouseExited(MouseEvent event) {
+//         isHovering = false;
+//     }
+//     public void mousePressed(MouseEvent event) {
+//         isClicked = true;
+//     }
+//     public void mouseReleased(MouseEvent event) {
+//         isClicked = false;
+//     }
+// }
+
+
 public class GUI_WORKER extends Front_End_Element_Code {
     public static JFrame Main_Frame;
     public static ArrayList<Integer> LastVistPage = new ArrayList<Integer>();
@@ -167,7 +195,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
     }
 
     public static void Frame(String Title) {
-        Main_Frame = Create_Frame(Title, PathDestinationToAssetsFolder + "local_library.png",800, 600);
+        Main_Frame = Create_Frame(Title, PathDestinationToAssetsFolder + "local_library.png",1000, 600);
     }
 
     // this is the welcome screen
@@ -616,14 +644,14 @@ public class GUI_WORKER extends Front_End_Element_Code {
         });
     }
 
-
+    static int[] SelectedObjectCount = {0};
     public static void Panel_Number_4() {
         LastVistPage.add(4);
         Clear_Frame(Main_Frame);
 
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
         
-        JTextField SearchInput = new JTextField("Search book...", 0);
+        JTextField SearchInput = new JTextField("", 0);
         SearchInput.setBounds(((Panel1.getWidth() / 2) - 150), ((Panel1.getHeight() / 2) - 25), 200, 50);
 
         JButton SearchButton = Create_Button((SearchInput.getX() + 225), ((Panel1.getHeight() / 2) - 25), "Search", 100, 50, 40);
@@ -653,9 +681,12 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
 
         JPanel This_Book_Shelf = new JPanel();
-        This_Book_Shelf.setLayout(new GridLayout(Grid_Count_Row, Grid_Count_Row / Grid_Count_Col));
 
-        //containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+        GridLayout layout = new GridLayout(0,3);
+        layout.setHgap(10);
+        layout.setVgap(10);
+
+        This_Book_Shelf.setLayout(layout);
 
         // Add your panels to the container panel
         for (Book book : BackEndSide.organiser.BookShelf_.getAllBooks()) {                    
@@ -686,8 +717,52 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
             Border blackline = BorderFactory.createLineBorder(Color.black);
             Book_Cover.setBorder(blackline);
+            final int[] SelectedObjectCount = {0};
+            Book_Cover.addMouseListener(new MouseAdapter() {
+                
+                static ArrayList<JPanel> Selected_Book_Covers = new ArrayList<>();
+                static HashMap<JPanel, Color> Book_Cover_Colour_Holder = new HashMap<>();
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println(SelectedObjectCount[0]);
+                    if (!Selected_Book_Covers.contains(Book_Cover) && SelectedObjectCount[0] < 3) {
+                        Book_Cover.getComponent(0).setBackground(SelectedObjectColour);
+                        Book_Cover.getComponent(1).setBackground(SelectedObjectColour);
+                        Selected_Book_Covers.add(Book_Cover);
+                        SelectedObjectCount[0]++;
+                    } else {
+                        Book_Cover.getComponent(0).setBackground(Color.WHITE);
+                        Book_Cover.getComponent(1).setBackground(Color.WHITE);
+                        Selected_Book_Covers.remove(Book_Cover);
+                        SelectedObjectCount[0]--;
+                    }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (Book_Cover_Colour_Holder.get(Book_Cover) == null && !Selected_Book_Covers.contains(Book_Cover)) {
+                        Book_Cover_Colour_Holder.put(Book_Cover, Book_Cover.getBackground());
+                        Book_Cover.getComponent(0).setBackground(HoverObjectColour);
+                        Book_Cover.getComponent(1).setBackground(HoverObjectColour);
+                    }
+                        
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (Book_Cover_Colour_Holder.get(Book_Cover) != null && !Selected_Book_Covers.contains(Book_Cover)) {
+                        Book_Cover.getComponent(0).setBackground(Color.WHITE);
+                        Book_Cover.getComponent(1).setBackground(Color.WHITE);
+                        Book_Cover_Colour_Holder.clear();
+                    }
+                }
+            });
+
+
             // Add the Book_Cover to the This_Book_Shelf
             This_Book_Shelf.add(Book_Cover);
+
+
             Main_Frame.repaint();
             Main_Frame.revalidate();
         }
@@ -772,10 +847,13 @@ public class GUI_WORKER extends Front_End_Element_Code {
                     Book_Cover.setBorder(blackline);
                     // Add the Book_Cover to the This_Book_Shelf
                     This_Book_Shelf.add(Book_Cover);
+
                     Main_Frame.repaint();
                     Main_Frame.revalidate();
                 }
             }
+
+            
             Main_Frame.repaint();
             Main_Frame.revalidate();
         });
