@@ -643,8 +643,10 @@ public class GUI_WORKER extends Front_End_Element_Code {
             Take_Me_Back_To_LastPage_That_I_Have_Visited();
         });
     }
+    public static ArrayList<String> Selected_Book_Covers = new ArrayList<>();
+    public static HashMap<String, Color> Book_Cover_Colour_Holder = new HashMap<>();
+    public static int[] SelectedObjectCount = {0}, BookCounter = {0};
 
-    static int[] SelectedObjectCount = {0};
     public static void Panel_Number_4() {
         LastVistPage.add(4);
         Clear_Frame(Main_Frame);
@@ -694,6 +696,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
             Book_Cover.setPreferredSize(new Dimension(200, 150));
             Book_Cover.setLayout(new GridLayout(0, 2));
             Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+            Book_Cover.setName(Integer.toString(BookCounter[0]));
             
             JPanel Book_Cover_Image_Panel = Create_Panel(0, 0, 50, 50);
             JLabel Image = Create_Label_With_ImageIcon((Book_Cover.getWidth() / 2) + 25, (Book_Cover.getHeight() / 2) + 25, PathDestinationToAssetsFolder + "local_library.png", 100, 100, true);
@@ -717,31 +720,28 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
             Border blackline = BorderFactory.createLineBorder(Color.black);
             Book_Cover.setBorder(blackline);
-            final int[] SelectedObjectCount = {0};
+        
             Book_Cover.addMouseListener(new MouseAdapter() {
-                
-                static ArrayList<JPanel> Selected_Book_Covers = new ArrayList<>();
-                static HashMap<JPanel, Color> Book_Cover_Colour_Holder = new HashMap<>();
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println(SelectedObjectCount[0]);
-                    if (!Selected_Book_Covers.contains(Book_Cover) && SelectedObjectCount[0] < 3) {
+                    System.out.println(SelectedObjectCount[0] + " " + Book_Cover.getName());
+                    if (!Selected_Book_Covers.contains(Book_Cover.getName()) && SelectedObjectCount[0] < 3) {
                         Book_Cover.getComponent(0).setBackground(SelectedObjectColour);
                         Book_Cover.getComponent(1).setBackground(SelectedObjectColour);
-                        Selected_Book_Covers.add(Book_Cover);
+                        Selected_Book_Covers.add(Book_Cover.getName());
                         SelectedObjectCount[0]++;
-                    } else {
+                    } else if (Selected_Book_Covers.contains(Book_Cover.getName())) {
                         Book_Cover.getComponent(0).setBackground(Color.WHITE);
                         Book_Cover.getComponent(1).setBackground(Color.WHITE);
-                        Selected_Book_Covers.remove(Book_Cover);
+                        Selected_Book_Covers.remove(Book_Cover.getName());
                         SelectedObjectCount[0]--;
                     }
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if (Book_Cover_Colour_Holder.get(Book_Cover) == null && !Selected_Book_Covers.contains(Book_Cover)) {
-                        Book_Cover_Colour_Holder.put(Book_Cover, Book_Cover.getBackground());
+                    if (Book_Cover_Colour_Holder.get(Book_Cover.getName()) == null && !Selected_Book_Covers.contains(Book_Cover.getName())) {
+                        Book_Cover_Colour_Holder.put(Book_Cover.getName(), Book_Cover.getBackground());
                         Book_Cover.getComponent(0).setBackground(HoverObjectColour);
                         Book_Cover.getComponent(1).setBackground(HoverObjectColour);
                     }
@@ -750,7 +750,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (Book_Cover_Colour_Holder.get(Book_Cover) != null && !Selected_Book_Covers.contains(Book_Cover)) {
+                    if (Book_Cover_Colour_Holder.get(Book_Cover.getName()) != null && !Selected_Book_Covers.contains(Book_Cover.getName())) {
                         Book_Cover.getComponent(0).setBackground(Color.WHITE);
                         Book_Cover.getComponent(1).setBackground(Color.WHITE);
                         Book_Cover_Colour_Holder.clear();
@@ -765,6 +765,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
             Main_Frame.repaint();
             Main_Frame.revalidate();
+            BookCounter[0]++;
         }
 
         // Create a JScrollPane and add the containerPanel to it
@@ -810,49 +811,39 @@ public class GUI_WORKER extends Front_End_Element_Code {
             }
         });
 
+
+        // make the books invisable
+
         SearchButton.addActionListener(v -> {
-            This_Book_Shelf.removeAll();
             String looking_for = SearchInput.getText();
-            // Add your panels to the container panel
-            for (Book book : BackEndSide.organiser.BookShelf_.getAllBooks()) {
-                if (book.getBookName().contains(looking_for) || book.getBookDescription().contains(looking_for) || book.getAuthor().contains(looking_for) || Integer.toString(book.getAmountOfViews()).contains(looking_for) || Float.toString(book.getBookRating()).contains(looking_for)) {
-       
-                    JPanel Book_Cover = new JPanel();
-                    Book_Cover.setPreferredSize(new Dimension(200, 150));
-                    Book_Cover.setLayout(new GridLayout(0, 2));
-                    Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
-                    
-                    JPanel Book_Cover_Image_Panel = Create_Panel(10, (Book_Cover.getHeight() / 2) - 50, 50, 50);
-                    JLabel Image = Create_Label_With_ImageIcon((Book_Cover_Image_Panel.getWidth() / 2) - 50, (Book_Cover_Image_Panel.getHeight() / 2) - 50, PathDestinationToAssetsFolder + "local_library.png", 100, 100, true);
-                    Book_Cover_Image_Panel.add(Image);
-        
-                    JPanel Book_Cover_ = Create_Panel(10, 10, Panel2.getWidth(), 25);
-        
-                    JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
-                    Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
-        
-                    JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
-        
-                    JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(),  Panel2.getWidth(), 25);
-        
-                    Book_Cover_.add(Title);
-                    Book_Cover_.add(Description);
-                    Book_Cover_.add(Author);
-        
-                    Book_Cover.add(Book_Cover_Image_Panel);
-                    Book_Cover.add(Book_Cover_);
-        
-        
-                    Border blackline = BorderFactory.createLineBorder(Color.black);
-                    Book_Cover.setBorder(blackline);
-                    // Add the Book_Cover to the This_Book_Shelf
-                    This_Book_Shelf.add(Book_Cover);
+            System.out.println(Selected_Book_Covers.size());
 
-                    Main_Frame.repaint();
-                    Main_Frame.revalidate();
+            for (int i = 0; i < This_Book_Shelf.getComponentCount(); i++) {
+                Boolean isThisTheBook = true;
+                JPanel bookCover = (JPanel) This_Book_Shelf.getComponent(i);
+                bookCover.setVisible(false);
+                JPanel jPanel_number_1 = (JPanel) bookCover.getComponent(0);
+                JPanel jPanel_number_2 = (JPanel) bookCover.getComponent(1);
+                loop1:
+                for (int j = 0; j < jPanel_number_2.getComponentCount(); j++) {
+                    JLabel jLabel_number_2 = (JLabel) jPanel_number_2.getComponent(j);
+                    if (jLabel_number_2.getText().contains(looking_for)) {
+                        isThisTheBook = true;
+                        bookCover.setVisible(true);
+                        break loop1;
+                    }
                 }
+                if (isThisTheBook) {
+                    if (Selected_Book_Covers.contains(bookCover.getClass().getName())) {
+                        // Book_Cover_Image_Panel and Book_Cover_
+                        jPanel_number_1.setBackground(HoverObjectColour);
+                        jPanel_number_2.setBackground(HoverObjectColour);
+                    }
+                }
+            
+                This_Book_Shelf.revalidate();
+                This_Book_Shelf.repaint();
             }
-
             
             Main_Frame.repaint();
             Main_Frame.revalidate();
