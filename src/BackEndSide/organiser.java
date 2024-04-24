@@ -3,7 +3,9 @@ package BackEndSide;
 import java.util.ArrayList;
 
 public class organiser {
+    
     public static class Book {
+        private int BookID;
         private String BookName;
         private String Author;
         private ArrayList<Integer> BookRatingList;
@@ -26,8 +28,17 @@ public class organiser {
         public String getBookName() {
             return BookName;
         }
+
         public String getAuthor() {
             return Author;
+        }
+
+        public void setID(int ID) {
+            this.BookID = ID;
+        }
+
+        public int getID() {
+            return BookID;
         }
 
         public float getBookRating() {
@@ -101,7 +112,7 @@ public class organiser {
         }
 
         public Book getBookByIndex(int Index) {
-            return BookShelfItems.get(Index - 1);
+            return BookShelfItems.get(Index);
         }
 
         public ArrayList<Book> getAllBooks() {
@@ -109,6 +120,7 @@ public class organiser {
         }
 
         public void addBook(Book book) {
+            book.setID(BookShelfItems.size()); // this will create a unique ID for each book
             this.BookShelfItems.add(book);
         }
 
@@ -118,6 +130,20 @@ public class organiser {
 
         public void removeAllBooks() {
             this.BookShelfItems.removeAll(BookShelfItems);
+        }
+
+        public ArrayList<Integer> searchBook_getIDs(String query) {
+            ArrayList<Integer> ids = new ArrayList<>();
+            for (Book book : BookShelfItems) {
+                if (book.getBookName().toLowerCase().contains(query.toLowerCase()) || 
+                    book.getBookDescription().toLowerCase().contains(query.toLowerCase()) ||
+                    book.getAuthor().toLowerCase().contains(query.toLowerCase()) ||
+                    ("View: " + Integer.toString(book.getAmountOfViews())).toLowerCase().contains(query.toLowerCase()) ||
+                    ("Rating: " + Float.toString(book.getBookRating())).toLowerCase().contains(query.toLowerCase())) {
+                    ids.add(book.getID());
+                }
+            }
+            return ids;
         }
     }
 
