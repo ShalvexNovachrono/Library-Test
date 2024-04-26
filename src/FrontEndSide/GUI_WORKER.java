@@ -197,6 +197,11 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame = Create_Frame(Title, PathDestinationToAssetsFolder + "local_library.png",1000, 600);
     }
 
+    public static void RefreshFrame() {
+        Main_Frame.repaint();
+        Main_Frame.revalidate();
+    }
+
     // this is the welcome screen
     public static void Panel_Number_1() {
         LastVistPage.add(1);
@@ -650,6 +655,10 @@ public class GUI_WORKER extends Front_End_Element_Code {
         LastVistPage.add(4);
         Clear_Frame(Main_Frame);
 
+        JButton SelectButton = Create_Button(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, "Select", 150,50, 45);
+        SelectButton.setVisible(false);
+        Main_Frame.add(SelectButton);
+
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
         
         JTextField SearchInput = new JTextField("", 0);
@@ -688,6 +697,14 @@ public class GUI_WORKER extends Front_End_Element_Code {
         layout.setVgap(10);
 
         This_Book_Shelf.setLayout(layout);
+
+        // Create a JScrollPane and add the containerPanel to it
+        JScrollPane Scroll_View = new JScrollPane(This_Book_Shelf);
+        Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50); // - 15 so the scroll bar can be seen
+        // Set scroll bar policies (optional)
+        Scroll_View.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        Scroll_View.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        Scroll_View.getVerticalScrollBar().setUnitIncrement(16);
 
         // Add your panels to the container panel
         for (Book book : BackEndSide.organiser.BookShelf_.getAllBooks()) {                    
@@ -735,6 +752,15 @@ public class GUI_WORKER extends Front_End_Element_Code {
                         Selected_Book_Covers.remove(Book_Cover.getName());
                         SelectedObjectCount[0]--;
                     }
+                    if (SelectedObjectCount[0] > 0) {
+                        Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
+                        SelectButton.setVisible(true);
+                    } else {
+                        Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                        SelectButton.setVisible(false);
+                    }
+
+                    RefreshFrame();
                 }
 
                 @Override
@@ -762,17 +788,9 @@ public class GUI_WORKER extends Front_End_Element_Code {
             This_Book_Shelf.add(Book_Cover);
 
 
-            Main_Frame.repaint();
-            Main_Frame.revalidate();
+            RefreshFrame();
         }
 
-        // Create a JScrollPane and add the containerPanel to it
-        JScrollPane Scroll_View = new JScrollPane(This_Book_Shelf);
-        Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50); // - 15 so the scroll bar can be seen
-        // Set scroll bar policies (optional)
-        Scroll_View.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        Scroll_View.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        Scroll_View.getVerticalScrollBar().setUnitIncrement(16);
 
         Panel2.add(Scroll_View);
 
@@ -780,13 +798,12 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
 
-        Main_Frame.repaint();
-        Main_Frame.revalidate();
+        RefreshFrame();
 
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-
+                SelectButton.setBounds(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, 150,50);
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
                 SearchInput.setBounds(
                     ((Panel1.getWidth() / 2) - 150),
@@ -800,13 +817,15 @@ public class GUI_WORKER extends Front_End_Element_Code {
                     200,
                     50
                 );
-               
-                Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                if (SelectedObjectCount[0] > 0) {
+                    Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
+                } else {
+                    Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                }
                 Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50);
-            
 
-                Main_Frame.repaint();
-                Main_Frame.revalidate();
+
+                RefreshFrame();
             }
         });
 
@@ -863,6 +882,17 @@ public class GUI_WORKER extends Front_End_Element_Code {
                             Selected_Book_Covers.remove(Book_Cover.getName());
                             SelectedObjectCount[0]--;
                         }
+                        if (SelectedObjectCount[0] > 0) {
+                            Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
+                            SelectButton.setVisible(true);
+                            Main_Frame.repaint();
+                            Main_Frame.revalidate();
+                        } else {
+                            Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+                            SelectButton.setVisible(false);
+                            Main_Frame.repaint();
+                            Main_Frame.revalidate();
+                        }
                     }
     
                     @Override
@@ -893,15 +923,15 @@ public class GUI_WORKER extends Front_End_Element_Code {
     
                 // Add the Book_Cover to the This_Book_Shelf
                 This_Book_Shelf.add(Book_Cover);
-    
-    
-                Main_Frame.repaint();
-                Main_Frame.revalidate();
+
+
+                RefreshFrame();
             }
-    
-            
-            Main_Frame.repaint();
-            Main_Frame.revalidate();
+
+
+
+
+            RefreshFrame();
         });
     }
 }
