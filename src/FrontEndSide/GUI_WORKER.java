@@ -184,7 +184,6 @@ public class GUI_WORKER extends Front_End_Element_Code {
     }
 
     static void Take_Me_Back_To_LastPage_That_I_Have_Visited() {
-        int Temp_Last_Int = 0;
         try {
             int LastInt = LastVistPage.get(LastVistPage.size() - 2);
             LastVistPage.remove(LastVistPage.size() - 2);
