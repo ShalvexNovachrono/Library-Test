@@ -246,8 +246,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
 
-        Main_Frame.repaint();
-        Main_Frame.revalidate();
+        RefreshFrame();
 
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -353,8 +352,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
 
-        Main_Frame.repaint();
-        Main_Frame.revalidate();
+        RefreshFrame();
 
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -492,8 +490,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
 
-        Main_Frame.repaint();
-        Main_Frame.revalidate();
+        RefreshFrame();
 
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -609,9 +606,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.add(Panel1);
         Main_Frame.add(Panel2);
 
-        Main_Frame.repaint();
-        Main_Frame.revalidate();
-
+        RefreshFrame();
+        
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -669,7 +665,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Panel1.add(SearchInput);
         Panel1.add(SearchButton);
 
-        JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
+        JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
 
         int Grid_Count_Col = 0;
         int Grid_Count_Row = 0;
@@ -753,10 +749,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
                         SelectedObjectCount[0]--;
                     }
                     if (SelectedObjectCount[0] > 0) {
-                        Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
                         SelectButton.setVisible(true);
                     } else {
-                        Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
                         SelectButton.setVisible(false);
                     }
 
@@ -817,11 +811,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
                     200,
                     50
                 );
-                if (SelectedObjectCount[0] > 0) {
-                    Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
-                } else {
-                    Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
-                }
+                Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
                 Scroll_View.setBounds(0, 0, Panel2.getWidth() - 15, Panel2.getHeight() - 50);
 
 
@@ -883,12 +873,10 @@ public class GUI_WORKER extends Front_End_Element_Code {
                             SelectedObjectCount[0]--;
                         }
                         if (SelectedObjectCount[0] > 0) {
-                            Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
                             SelectButton.setVisible(true);
                             Main_Frame.repaint();
                             Main_Frame.revalidate();
                         } else {
-                            Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
                             SelectButton.setVisible(false);
                             Main_Frame.repaint();
                             Main_Frame.revalidate();
