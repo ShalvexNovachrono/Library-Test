@@ -64,6 +64,7 @@ public class File_Worker {
 
                     String content = Username + "[-/00/-]" + hashPassword(Password) + "\n";
                     file.write(content);
+                    LastVistPage.removeAll(LastVistPage);
                     Panel_Number_2();
                     file.close();
                 } catch (IOException e) {
@@ -97,6 +98,7 @@ public class File_Worker {
                         if (u.equals(Username) && verifyPassword(Password, p)) {
                             FrontEndSide.GUI_WORKER.Username = Username;
                             isLoggedIn = true;
+                            LastVistPage.removeAll(LastVistPage);
                             Panel_Number_4();
                             break;
                         }
