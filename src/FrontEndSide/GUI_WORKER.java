@@ -170,8 +170,21 @@ public class GUI_WORKER extends Front_End_Element_Code {
     public static ArrayList<Integer> LastVistPage = new ArrayList<Integer>();
     public static Boolean isLoggedIn = false;
     public static String Username = "";
+    public static ArrayList<Integer[]> SelectedIndex = new ArrayList<Integer[]>();
+
+    static void Get_Last_Selected_Int() {
+        try {
+            Integer[] LastSelectedIndexInt = SelectedIndex.get(SelectedIndex.size() - 2);
+            SelectedIndex.remove(SelectedIndex.size() - 2);
+            SelectedIndex.remove(SelectedIndex.size() - 1);
+        } catch (Exception e) {
+            if (SelectedIndex.size() > 1)
+                SelectedIndex.removeAll(SelectedIndex);
+        }
+    }
 
     static void Take_Me_Back_To_LastPage_That_I_Have_Visited() {
+        int Temp_Last_Int = 0;
         try {
             int LastInt = LastVistPage.get(LastVistPage.size() - 2);
             LastVistPage.remove(LastVistPage.size() - 2);
@@ -185,6 +198,12 @@ public class GUI_WORKER extends Front_End_Element_Code {
                     break;
                 case 3:
                     Panel_Number_3();
+                    break;
+                case 4:
+                    Panel_Number_4();
+                    break;
+                case 5:
+                    Panel_Number_5(SelectedIndex);
                     break;
             }
         } catch (Exception e) {
@@ -647,6 +666,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
     public static HashMap<String, Color> Book_Cover_Colour_Holder = new HashMap<>();
     public static int[] SelectedObjectCount = {0};
 
+
+    // search the void
     public static void Panel_Number_4() {
         LastVistPage.add(4);
         Clear_Frame(Main_Frame);
@@ -921,5 +942,26 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
             RefreshFrame();
         });
+    }
+
+    public static void Panel_Number_5(ArrayList<Integer[]> Indexs) {
+        LastVistPage.add(5);
+        Clear_Frame(Main_Frame);
+
+        JButton SelectButton = Create_Button(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, "Select", 150,50, 45);
+        SelectButton.setVisible(false);
+        Main_Frame.add(SelectButton);
+
+        JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
+
+        JTextField SearchInput = new JTextField("", 0);
+        SearchInput.setBounds(((Panel1.getWidth() / 2) - 150), ((Panel1.getHeight() / 2) - 25), 200, 50);
+
+        JButton SearchButton = Create_Button((SearchInput.getX() + 225), ((Panel1.getHeight() / 2) - 25), "Search", 100, 50, 40);
+
+        Panel1.add(SearchInput);
+        Panel1.add(SearchButton);
+
+        JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
     }
 }
