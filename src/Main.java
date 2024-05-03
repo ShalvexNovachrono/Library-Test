@@ -8,7 +8,7 @@ public class Main {
 
         Frame("Local Library"); // Makes a frame with the Title "Local Library"
         Load_Books();
-        Panel_Number_4(); // This will call the GUI function in "FrontEndSide/GUI_WORKER.java"
+        Panel_Number_1(); // This will call the GUI function in "FrontEndSide/GUI_WORKER.java"
        
     }
 
