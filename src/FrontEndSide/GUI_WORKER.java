@@ -196,13 +196,14 @@ public class GUI_WORKER extends Front_End_Element_Code {
         }
     }
 
-    static Boolean isLastVistPageEmpty() {
+    /**
+     * static Boolean isLastVistPageEmpty() {
         if (LastVistPage.size() == 0)
             return true;
         else
             return false;
     }
-
+    */
     public static void Frame(String Title) {
         Main_Frame = Create_Frame(Title, PathDestinationToAssetsFolder + "local_library.png",1000, 600);
     }
@@ -978,99 +979,86 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
         // Create a JScrollPane and add the containerPanel to it
         JScrollPane Scroll_View = new JScrollPane(This_Book_Shelf);
-        Scroll_View.setBounds(((Panel2.getWidth() - 215) / 2) - ((Panel2.getWidth() - 215) / 3), ((Panel2.getHeight() - 250) / 2) - ((Panel2.getHeight() - 250) / 3), Panel2.getWidth() - 215, Panel2.getHeight() - 250); // - 15 so the scroll bar can be seen
+        // scroll_view is smaller but gets bigger when screen size changes
+
+        Scroll_View.setBounds(0 , 0, Panel2.getWidth() - 15, Panel2.getHeight()); // - 15 so the scroll bar can be seen (bottom side)
+
         // Set scroll bar policies (optional)
         Scroll_View.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         Scroll_View.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         Scroll_View.getVerticalScrollBar().setUnitIncrement(16);
 
         for (int i = 0; i < Indexs.size(); i++) {
-            Book book = BackEndSide.organiser.BookShelf_.getBookByIndex(Indexs.get(i));  // gets the book by the index              
-            JPanel Book_Cover = new JPanel();
-            Book_Cover.setPreferredSize(new Dimension(200, 150));
-            Book_Cover.setLayout(new GridLayout(0, 2));
-            Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
-            Book_Cover.setName(Integer.toString(book.getID()));
-            
-            JPanel Book_Cover_Image_Panel = Create_Panel(0, 0, 50, 50);
-            JLabel Image = Create_Label_With_ImageIcon((Book_Cover.getWidth() / 2) + 25, (Book_Cover.getHeight() / 2) + 25, PathDestinationToAssetsFolder + "local_library.png", 100, 100, true);
-            Book_Cover_Image_Panel.add(Image);
+            Book book = BackEndSide.organiser.BookShelf_.getBookByIndex(Indexs.get(i));  // gets the book by the index
 
-            JPanel Book_Cover_ = Create_Panel(0, 0, Book_Cover.getWidth(), 100);
+            if (!Book.getCurrently_Taken()) {
+                JPanel Book_Cover = new JPanel();
+                Book_Cover.setPreferredSize(new Dimension(600, 400)); // width and height
+                Book_Cover.setLayout(new GridLayout(0, 2));
+                Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+                Book_Cover.setName(Integer.toString(book.getID()));
+                JPanel Book_Cover_Image_Panel = Create_Panel(0, 0, 50, 50);
+                JLabel Image = Create_Label_With_ImageIcon((Book_Cover.getWidth() / 2) + 25, (Book_Cover.getHeight() / 2) + 25, PathDestinationToAssetsFolder + "local_library.png", 100, 100, true);
+                Book_Cover_Image_Panel.add(Image);
 
-            JLabel Title = Create_Label(25, 0, book.getBookName(), Panel2.getWidth(), 25);
-            Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
+                JPanel Book_Cover_ = Create_Panel(0, 0, Book_Cover.getWidth(), 100);
 
-            JLabel Description = Create_Label(25, Title.getX() + 25, book.getBookDescription(), Panel2.getWidth(), 25);
+                JLabel Title = Create_Label(25, 0, "Book Name: " +  book.getBookName(), Panel2.getWidth(), 25);
+                Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
 
-            JLabel Author = Create_Label(25, Description.getX() + 55, book.getAuthor(),  Panel2.getWidth(), 25);
+                JLabel Description = Create_Label(25, Title.getX() + 25, "Description: " + book.getBookDescription(), Panel2.getWidth(), 25);
 
-            Book_Cover_.add(Title);
-            Book_Cover_.add(Description);
-            Book_Cover_.add(Author);
+                JLabel Author = Create_Label(25, Description.getX() + 55, "Author: " +  book.getAuthor(),  Panel2.getWidth(), 25);
 
-            Book_Cover.add(Book_Cover_Image_Panel);
-            Book_Cover.add(Book_Cover_);
+                JLabel View = Create_Label(25, Description.getX() + 85, "View: " +  book.getAmountOfViews(),  Panel2.getWidth(), 25); // y is previous elements y plus 25 and plus another 5 for margin
 
-            Border blackline = BorderFactory.createLineBorder(Color.black);
-            Book_Cover.setBorder(blackline);
-        
-            Book_Cover.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    System.out.println(SelectedObjectCount[0] + " " + Book_Cover.getName());
-                    if (!Selected_Book_Covers.contains(Book_Cover.getName()) && SelectedObjectCount[0] < 3) {
-                        Book_Cover.getComponent(0).setBackground(SelectedObjectColour);
-                        Book_Cover.getComponent(1).setBackground(SelectedObjectColour);
-                        Selected_Book_Covers.add(Book_Cover.getName());
-                        SelectedObjectCount[0]++;
-                    } else if (Selected_Book_Covers.contains(Book_Cover.getName())) {
-                        Book_Cover.getComponent(0).setBackground(Color.WHITE);
-                        Book_Cover.getComponent(1).setBackground(Color.WHITE);
-                        Selected_Book_Covers.remove(Book_Cover.getName());
-                        SelectedObjectCount[0]--;
+                JLabel Taken = Create_Label(25, Description.getX() + 110, "Is it taken?: " +  book.getCurrently_Taken(),  Panel2.getWidth(), 25);
+
+                JLabel Rating = Create_Label(25, Description.getX() + 135, "Rating: " +  book.getBookRating() + " / 10",  Panel2.getWidth(), 25);
+
+                Book_Cover_.add(Title);
+                Book_Cover_.add(Description);
+                Book_Cover_.add(Author);
+                Book_Cover_.add(View);
+                Book_Cover_.add(Taken);
+                Book_Cover_.add(Rating);
+
+                Book_Cover.add(Book_Cover_Image_Panel);
+                Book_Cover.add(Book_Cover_);
+
+                Border blackline = BorderFactory.createLineBorder(Color.black);
+                Book_Cover.setBorder(blackline);
+
+                Book_Cover.addMouseListener(new MouseAdapter() {
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        if (Book_Cover_Colour_Holder.get(Book_Cover.getName()) == null && !Selected_Book_Covers.contains(Book_Cover.getName())) {
+                            Book_Cover_Colour_Holder.put(Book_Cover.getName(), Book_Cover.getBackground());
+                            Book_Cover.getComponent(0).setBackground(HoverObjectColour);
+                            Book_Cover.getComponent(1).setBackground(HoverObjectColour);
+                        }
+
                     }
-                    if (SelectedObjectCount[0] > 0) {
-                        SelectButton.setVisible(true);
-                        Main_Frame.repaint();
-                        Main_Frame.revalidate();
-                    } else {
-                        SelectButton.setVisible(false);
-                        Main_Frame.repaint();
-                        Main_Frame.revalidate();
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        if (Book_Cover_Colour_Holder.get(Book_Cover.getName()) != null && !Selected_Book_Covers.contains(Book_Cover.getName())) {
+                            Book_Cover.getComponent(0).setBackground(Color.WHITE);
+                            Book_Cover.getComponent(1).setBackground(Color.WHITE);
+                            Book_Cover_Colour_Holder.clear();
+                        }
                     }
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    if (Book_Cover_Colour_Holder.get(Book_Cover.getName()) == null && !Selected_Book_Covers.contains(Book_Cover.getName())) {
-                        Book_Cover_Colour_Holder.put(Book_Cover.getName(), Book_Cover.getBackground());
-                        Book_Cover.getComponent(0).setBackground(HoverObjectColour);
-                        Book_Cover.getComponent(1).setBackground(HoverObjectColour);
-                    }
-                        
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    if (Book_Cover_Colour_Holder.get(Book_Cover.getName()) != null && !Selected_Book_Covers.contains(Book_Cover.getName())) {
-                        Book_Cover.getComponent(0).setBackground(Color.WHITE);
-                        Book_Cover.getComponent(1).setBackground(Color.WHITE);
-                        Book_Cover_Colour_Holder.clear();
-                    }
-                }
-            });
-
-            if (Selected_Book_Covers.contains(Book_Cover.getName())) {
-                Book_Cover.getComponent(0).setBackground(SelectedObjectColour);
-                Book_Cover.getComponent(1).setBackground(SelectedObjectColour);
-            } 
+                });
 
 
-            // Add the Book_Cover to the This_Book_Shelf
-            This_Book_Shelf.add(Book_Cover);
 
 
+
+                // Add the Book_Cover to the This_Book_Shelf
+                This_Book_Shelf.add(Book_Cover);
+
+            }
             RefreshFrame();
         }
 
@@ -1089,9 +1077,9 @@ public class GUI_WORKER extends Front_End_Element_Code {
                 SelectButton.setBounds(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, 150,50);
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
-                Scroll_View.setBounds(((Panel2.getWidth() - 215) / 2) - ((Panel2.getWidth() - 215) / 3), ((Panel2.getHeight() - 250) / 2) - ((Panel2.getHeight() - 250) / 3), Panel2.getWidth() - 215, Panel2.getHeight() - 250); // - 15 so the scroll bar can be seen
-        
 
+
+                Scroll_View.setBounds(0 , 0, Panel2.getWidth() - 15, Panel2.getHeight()); // - 15 so the scroll bar can be seen (bottom side)
                 RefreshFrame();
             }
         });
