@@ -965,7 +965,10 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.add(SelectButton);
 
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
+        JButton BackButton = Create_Button(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40);
+        BackButton.setRolloverEnabled(false);
 
+        Panel1.add(BackButton);
 
         JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
 
@@ -991,8 +994,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
         for (int i = 0; i < Indexs.size(); i++) {
             Book book = BackEndSide.organiser.BookShelf_.getBookByIndex(Indexs.get(i));  // gets the book by the index
 
+            JPanel Book_Cover = new JPanel();
             if (!Book.getCurrently_Taken()) {
-                JPanel Book_Cover = new JPanel();
                 Book_Cover.setPreferredSize(new Dimension(600, 400)); // width and height
                 Book_Cover.setLayout(new GridLayout(0, 2));
                 Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -1051,14 +1054,30 @@ public class GUI_WORKER extends Front_End_Element_Code {
                     }
                 });
 
+            } else {
+                Book_Cover.setPreferredSize(new Dimension(600, 400)); // width and height
+                Book_Cover.setLayout(new GridLayout(0, 2));
+                Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
+                Book_Cover.setName(Integer.toString(book.getID()));
+                JPanel Book_Cover_Image_Panel = Create_Panel(0, 0, 50, 50);
+                JLabel Image = Create_Label_With_ImageIcon((Book_Cover.getWidth() / 2) + 25, (Book_Cover.getHeight() / 2) + 25, PathDestinationToAssetsFolder + "local_library.png", 100, 100, true);
+                Book_Cover_Image_Panel.add(Image);
+
+                JPanel Book_Cover_ = Create_Panel(0, 0, Book_Cover.getWidth(), 100);
+
+                JLabel Title = Create_Label(25, 0, "Selected Book is taken", Panel2.getWidth(), 25);
+                Title.setFont(new java.awt.Font(FrameDefaultFontName, Font.BOLD, 17));
 
 
+                Book_Cover_.add(Title);
 
-
-                // Add the Book_Cover to the This_Book_Shelf
-                This_Book_Shelf.add(Book_Cover);
-
+                Border blackline = BorderFactory.createLineBorder(Color.black);
+                Book_Cover.setBorder(blackline);
+                Indexs.remove(i);
             }
+
+            This_Book_Shelf.add(Book_Cover);
+
             RefreshFrame();
         }
 
@@ -1076,6 +1095,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
             public void componentResized(ComponentEvent e) {
                 SelectButton.setBounds(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, 150,50);
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
+                BackButton.setBounds(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, 100, 50);
+
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
 
 
@@ -1083,6 +1104,8 @@ public class GUI_WORKER extends Front_End_Element_Code {
                 RefreshFrame();
             }
         });
+
+
 
     }
 }
