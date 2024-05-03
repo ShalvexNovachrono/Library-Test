@@ -15,7 +15,7 @@ public class organiser {
         private String Return_Due_Date;
         private String Last_Date_Taken;
         private ArrayList<String> ReadBy;
-        private Boolean Currently_Taken;
+        private static Boolean Currently_Taken = false;
 
         public Book(String BookName, String Author, String BookDescription){
             this.BookName = BookName;
@@ -97,7 +97,7 @@ public class organiser {
             this.ReadBy.add(UserName);
         }
 
-        public Boolean getCurrently_Taken() {
+        public static Boolean getCurrently_Taken() {
             return Currently_Taken;
         }
         public void setCurrently_Taken(Boolean Currently_Taken) {
