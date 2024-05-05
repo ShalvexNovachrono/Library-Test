@@ -663,14 +663,10 @@ public class GUI_WORKER extends Front_End_Element_Code {
     public static void Panel_Number_4() {
         LastVistPage.add(4);
         Clear_Frame(Main_Frame);
-        try {
-            Selected_Book_Covers.removeAll(Selected_Book_Covers);
-        } catch (Exception e) {
-            System.out.println(":/");
-        }
         
-        JButton BackButton = Create_Button(Main_Frame.getWidth() - 500, Main_Frame.getHeight() - 95, "Back", 150,50, 45);
+        JButton BackButton = Create_Button(Main_Frame.getWidth() - 310, Main_Frame.getHeight() - 95, "Back", 100,50, 45);
         JButton SelectButton = Create_Button(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, "Select", 150,50, 45);
+        SelectButton.setVisible(false);
         Main_Frame.add(BackButton);
         Main_Frame.add(SelectButton);
 
@@ -816,6 +812,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
+                BackButton.setBounds(Main_Frame.getWidth() - 310, Main_Frame.getHeight() - 95, 100, 50);
                 SelectButton.setBounds(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, 150,50);
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
                 SearchInput.setBounds(
@@ -952,23 +949,30 @@ public class GUI_WORKER extends Front_End_Element_Code {
             for (String i:Selected_Book_Covers) {
                 temp.add(Integer.parseInt(i));
             }
+            /*
+             * need to make selected book cover empty so that i when i come back to this panel it does not allow me to press on the select button when i did not press the book panels
+             */
+            Selected_Book_Covers.removeAll(Selected_Book_Covers);
+            SelectedObjectCount[0] = 0;
             Panel_Number_5(temp);
         });
     }
 
+
+    // you take the books
     public static void Panel_Number_5(ArrayList<Integer> Indexs) {
+
         LastVistPage.add(5);
         Clear_Frame(Main_Frame);
 
-        JButton SelectButton = Create_Button(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, "Select", 150,50, 45);
-        SelectButton.setVisible(false);
-        Main_Frame.add(SelectButton);
-
         JPanel Panel1 = Create_Panel(0, 0, Main_Frame.getWidth(), 100);
-        JButton BackButton = Create_Button(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 40);
+        JButton BackButton = Create_Button(Panel1.getWidth() - 310, (Panel1.getHeight() / 2) - 25, "Back", 100, 50, 45);
+        JButton SelectButton = Create_Button(Panel1.getWidth() - 200, (Panel1.getHeight() / 2) - 25, "Take Book", 150,50, 45);
         BackButton.setRolloverEnabled(false);
+        SelectButton.setRolloverEnabled(false);
 
         Panel1.add(BackButton);
+        Panel1.add(SelectButton);
 
         JPanel Panel2 = Create_Panel(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 100);
 
@@ -995,7 +999,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
             Book book = BackEndSide.organiser.BookShelf_.getBookByIndex(Indexs.get(i));  // gets the book by the index
 
             JPanel Book_Cover = new JPanel();
-            if (!Book.getCurrently_Taken()) {
+            if (!book.getCurrently_Taken()) {
                 Book_Cover.setPreferredSize(new Dimension(600, 400)); // width and height
                 Book_Cover.setLayout(new GridLayout(0, 2));
                 Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -1056,7 +1060,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
             } else {
                 Book_Cover.setPreferredSize(new Dimension(600, 400)); // width and height
-                Book_Cover.setLayout(new GridLayout(0, 2));
+                Book_Cover.setLayout(new GridLayout(0, 1));
                 Book_Cover.setAlignmentX(Component.LEFT_ALIGNMENT);
                 Book_Cover.setName(Integer.toString(book.getID()));
                 JPanel Book_Cover_Image_Panel = Create_Panel(0, 0, 50, 50);
@@ -1073,7 +1077,7 @@ public class GUI_WORKER extends Front_End_Element_Code {
 
                 Border blackline = BorderFactory.createLineBorder(Color.black);
                 Book_Cover.setBorder(blackline);
-                Indexs.remove(i);
+                Book_Cover.add(Book_Cover_);
             }
 
             This_Book_Shelf.add(Book_Cover);
@@ -1093,9 +1097,9 @@ public class GUI_WORKER extends Front_End_Element_Code {
         Main_Frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                SelectButton.setBounds(Main_Frame.getWidth() - 200, Main_Frame.getHeight() - 95, 150,50);
                 Panel1.setBounds(0, 0, Main_Frame.getWidth(), 100);
-                BackButton.setBounds(Panel1.getWidth() - 260, (Panel1.getHeight() / 2) - 25, 100, 50);
+                BackButton.setBounds(Panel1.getWidth() - 310, (Panel1.getHeight() / 2) - 25, 100, 50);
+                SelectButton.setBounds(Panel1.getWidth() - 200, (Panel1.getHeight() / 2) - 25, 150,50);
 
                 Panel2.setBounds(0, 100, Main_Frame.getWidth(), Main_Frame.getHeight() - 150);
 
@@ -1105,7 +1109,12 @@ public class GUI_WORKER extends Front_End_Element_Code {
             }
         });
 
-
+        BackButton.addActionListener(v -> {
+            Take_Me_Back_To_LastPage_That_I_Have_Visited();
+        });
 
     }
+
+
+
 }

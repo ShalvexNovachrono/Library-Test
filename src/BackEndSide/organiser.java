@@ -15,7 +15,7 @@ public class organiser {
         private String Return_Due_Date;
         private String Last_Date_Taken;
         private ArrayList<String> ReadBy;
-        private static Boolean Currently_Taken = false;
+        private Boolean Currently_Taken;
 
         public Book(String BookName, String Author, String BookDescription){
             this.BookName = BookName;
@@ -23,6 +23,7 @@ public class organiser {
             this.BookDescription = BookDescription;
             this.BookRatingList = new ArrayList<>();
             this.ReadBy = new ArrayList<>();
+            this.Currently_Taken = false;
         }
 
         public String getBookName() {
@@ -97,8 +98,8 @@ public class organiser {
             this.ReadBy.add(UserName);
         }
 
-        public static Boolean getCurrently_Taken() {
-            return Currently_Taken;
+        public Boolean getCurrently_Taken() {
+            return this.Currently_Taken;
         }
         public void setCurrently_Taken(Boolean Currently_Taken) {
             this.Currently_Taken = Currently_Taken;
@@ -150,16 +151,16 @@ public class organiser {
     static class User {
         private String UserName;
         private String type;
-        private ArrayList<Book> ReadBooks;
-        public ArrayList<Book> BooksOnHand;
-        public ArrayList<Book> OverDueBooksOnHand;
+        private ArrayList<Integer> ReadBooks; // takes the id of the book that way we can save proccess power and ram hopefully
+        public ArrayList<Integer> BooksOnHand;
+        public ArrayList<Integer> OverDueBooksOnHand;
 
         public User(String UserName, String type) {
             this.UserName = UserName;
             this.type = type;
-            this.ReadBooks = new ArrayList<Book>();
-            this.BooksOnHand = new ArrayList<>();
-            this.OverDueBooksOnHand = new ArrayList<>();
+            this.ReadBooks = new ArrayList<Integer>();
+            this.BooksOnHand = new ArrayList<Integer>();
+            this.OverDueBooksOnHand = new ArrayList<Integer>();
         }
 
         public String getUserName() {
@@ -170,20 +171,20 @@ public class organiser {
             return this.type;
         }
 
-        public ArrayList<Book> getReadBooks() {
+        public ArrayList<Integer> getReadBooks() {
             return this.ReadBooks;
         }
 
-        public void addToReadBooks(Book book) {
-            this.ReadBooks.add(book);
+        public void addToReadBooks(int BookID) {
+            this.ReadBooks.add(BookID);
         }
 
-        public ArrayList<Book> getBooksOnHand() {
+        public ArrayList<Integer> getBooksOnHand() {
             return this.BooksOnHand;
         }
-        public void addToBooksOnHand(Book book) {
+        public void addToBooksOnHand(int BookID) {
             if (this.BooksOnHand.size() <= 3) {
-                this.BooksOnHand.add(book);
+                this.BooksOnHand.add(BookID);
             } else {
                 System.out.println("To many book on hand!");
             }
@@ -196,11 +197,11 @@ public class organiser {
             this.BooksOnHand.removeAll(BooksOnHand);
         }
 
-        public ArrayList<Book> getOverDueBooksOnHand() {
+        public ArrayList<Integer> getOverDueBooksOnHand() {
             return this.OverDueBooksOnHand;
         }
-        public void addToOverDueBooksOnHand(Book book) {
-            this.OverDueBooksOnHand.add(book);
+        public void addToOverDueBooksOnHand(int BookID) {
+            this.OverDueBooksOnHand.add(BookID);
         }
         public void removeOverDueBooksOnHand_ByIndex(int Index) {
             this.OverDueBooksOnHand.remove(Index);
